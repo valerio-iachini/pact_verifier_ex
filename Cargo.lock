@@ -2054,6 +2054,8 @@ dependencies = [
 name = "pact_verifier_nif"
 version = "0.1.0"
 dependencies = [
+ "bytes",
+ "either",
  "env_logger",
  "futures",
  "log",

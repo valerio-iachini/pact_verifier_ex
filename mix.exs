@@ -3,21 +3,21 @@ defmodule PactElixir.MixProject do
 
   def project do
     [
-      app: :pact_consumer_ex,
+      app: :pact_verifier_ex,
       version: "0.3.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Elixir NIF bindings for the pact_consumer Rust library.",
+      description: "Elixir NIF bindings for the pact_verifier Rust library.",
       package: package()
     ]
   end
 
   defp package do
     [
-      name: "pact_consumer_ex",
+      name: "pact_verifier_ex",
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/valerio-iachini/pact_consumer_ex"},
+      links: %{"GitHub" => "https://github.com/valerio-iachini/pact_verifier_ex"},
       maintainers: ["Valerio Iachini"],
       files: [
         "lib",
