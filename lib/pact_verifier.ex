@@ -60,7 +60,7 @@ defmodule Pact.PactVerifier do
     Create a default provider info struct.
     """
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         name: "provider",
         protocol: "http",
@@ -105,7 +105,7 @@ defmodule Pact.PactVerifier do
     Create a default provider transport struct.
     """
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         transport: "http",
         port: 8080,
@@ -146,7 +146,7 @@ defmodule Pact.PactVerifier do
             | :none
 
     @spec default() :: __MODULE__.t()
-    def default(), do: {:user, "", nil}
+    def default, do: {:user, "", nil}
 
     @spec user(username :: String.t(), password :: nil | String.t()) :: __MODULE__.t()
     def user(username, password \\ nil), do: {:user, username, password}
@@ -175,7 +175,7 @@ defmodule Pact.PactVerifier do
           }
 
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         name: "link",
         href: nil,
@@ -417,7 +417,7 @@ defmodule Pact.PactVerifier do
           }
 
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         provider_version: nil,
         build_url: nil,
@@ -516,7 +516,7 @@ defmodule Pact.PactVerifier do
           }
 
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         # request_filter: nil,
         disable_ssl_verification: false,
@@ -559,7 +559,7 @@ defmodule Pact.PactVerifier do
           }
 
     @spec default() :: __MODULE__.t()
-    def default() do
+    def default do
       %__MODULE__{
         state_change_url: nil,
         state_change_teardown: false,
