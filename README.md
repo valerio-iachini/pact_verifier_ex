@@ -1,15 +1,16 @@
-# pact_consumer_ex
+# pact_verifier_ex
 
-`pact_consumer_ex` is an Elixir library that provides Native Implemented Function (NIF) bindings to the [`pact_consumer`](https://github.com/pact-foundation/pact-reference/tree/master/rust/pact_consumer) Rust library. It leverages [Rustler](https://github.com/rusterlium/rustler) to expose the Rust functions while maintaining the same look and feel as the original library.
+`pact_verifier_ex` is an Elixir library that provides Native Implemented Function (NIF) bindings to the [`pact_verifier`](https://github.com/pact-foundation/pact-reference/tree/master/rust/pact_verifier) Rust library. It leverages [Rustler](https://github.com/rusterlium/rustler) to expose the Rust functions while maintaining the same look and feel as the original library. This library enables provider verification for Pact contracts in Elixir projects, using the official Rust implementation under the hood.
 
 ## Installation
+
 
 Add to your `mix.exs` dependencies:
 
 ```elixir
 def deps do
   [
-    {:pact_consumer_ex, "~> 0.3.0", only: [:test]}
+    {:pact_verifier_ex, "~> 0.1.0", only: [:test]}
   ]
 end
 ```
@@ -22,17 +23,14 @@ mix deps.get
 
 ## Usage
 
-For example usage of the library, refer to the [`test/pact_builder_test.exs`](test/pact_builder_test.exs) file, which contains practical examples demonstrating how to utilize the exposed NIF functions.
+
+For example usage of the library, refer to the [`test/pact_builder_test.exs`](test/pact_builder_test.exs) file, which contains practical examples demonstrating how to verify a provider using Pact contracts and the exposed NIF functions.
 
 ## Configuration
 
-This library uses the same environment variables as the Rust `pact_consumer` library ([Pact test DSL for writing consumer pact tests in Rust - Pact Docs](https://docs.pact.io/implementation_guides/rust/pact_consumer)):
 
-- **Changing the output directory**:  
-  By default, the pact files will be written to `target/pacts`. To change this, set the environment variable `PACT_OUTPUT_DIR`. 
+This library uses the same environment variables as the Rust `pact_verifier` library ([Pact provider verification in Rust - Pact Docs](https://docs.pact.io/implementation_guides/rust/pact_verifier)):
 
-- **Forcing pact files to be overwritten**:  
-  Pacts are merged with existing pact files when written. To change this behaviour so that the files are always overwritten, set the environment variable `PACT_OVERWRITE` to `true`.
 
 ## Pact Plugins
 
@@ -44,19 +42,23 @@ For more information about plugins, refer to the [Pact plugin quick start guide]
 
 ## Current Status
 
-Currently, `pact_consumer_ex` supports:
 
-- Synchronous HTTP interactions.
-- Asynchronous message interactions.
-- Integration with Pact plugins.
+Currently, `pact_verifier_ex` supports:
+
+- Provider verification for HTTP and message-based pacts
+- Support for advanced verification options (filters, custom headers, SSL, etc.)
+- Integration with Pact plugins
+
 
 Planned future enhancements include:
+- Implement RequestFilter
+- Implement Matching rules and generators
 
-- Support for synchronous message interactions.
 
 ## Contributing
 
 Contributions are welcome! Please open issues or submit pull requests for any enhancements or bug fixes.
+
 
 ## License
 

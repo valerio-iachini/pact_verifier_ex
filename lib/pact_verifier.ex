@@ -398,7 +398,15 @@ defmodule Pact.PactVerifier do
 
   defmodule VerificationMetrics do
     @moduledoc """
-    VerificationMetrics
+    Structure for providing metrics and metadata about the verification process.
+
+    This struct is used to supply information about the test framework, application name, and application version
+    to the verifier. These metrics may be published to the Pact Broker or used for reporting and analytics.
+
+    ## Fields
+    * `test_framework` - The name of the test framework being used (e.g., ExUnit, ESpec).
+    * `app_name` - The name of the application running the verification.
+    * `app_version` - The version of the application running the verification.
     """
     defstruct [
       :test_framework,
@@ -415,7 +423,15 @@ defmodule Pact.PactVerifier do
 
   defmodule HttpRequest do
     @moduledoc """
-    HttpRequest
+    Structure representing an HTTP request used during provider verification.
+
+    This struct is used to model HTTP requests sent to the provider or for state change callbacks during the verification process.
+
+    ## Fields
+    * `method` - The HTTP method (e.g., GET, POST, PUT, DELETE).
+    * `path` - The request path (relative to the provider base URL).
+    * `query` - Optional map of query parameters.
+    * `headers` - Optional map of HTTP headers to include in the request.
     """
     defstruct [
       :method,
@@ -457,7 +473,7 @@ defmodule Pact.PactVerifier do
     ]
 
     @type t :: %__MODULE__{
-            request_filter: nil | RequestFilter.t(),
+            #request_filter: nil,
             disable_ssl_verification: boolean(),
             request_timeout: integer(),
             custom_headers: map(),
@@ -470,7 +486,7 @@ defmodule Pact.PactVerifier do
     @spec default() :: __MODULE__.t()
     def default() do
       %__MODULE__{
-        request_filter: nil,
+        #request_filter: nil,
         disable_ssl_verification: false,
         request_timeout: 5000,
         custom_headers: %{},
@@ -484,7 +500,17 @@ defmodule Pact.PactVerifier do
 
   defmodule HttpRequestProviderStateExecutor do
     @moduledoc """
-    HttpRequestProviderStateExecutor
+    Executor for provider state changes using HTTP requests.
+
+    This struct configures how provider state changes are executed via HTTP requests during verification.
+    It allows specifying the URL to call for state changes, whether to perform teardown calls after verification,
+    whether to include the state change in the request body, and how many times to retry the state change call on failure.
+
+    ## Fields
+    * `state_change_url` - The URL to call for provider state changes. If not set, no state change requests will be made.
+    * `state_change_teardown` - If true, a teardown request will be made after verification to clean up provider state.
+    * `state_change_body` - If true, the state change will be sent in the request body as JSON. If false, it will be sent as query parameters.
+    * `reties` - The number of times to retry the state change request if it fails.
     """
     defstruct [
       :state_change_url,
@@ -511,6 +537,28 @@ defmodule Pact.PactVerifier do
     end
   end
 
+  @doc """
+  Verifies a provider against one or more pacts.
+
+  This function runs the verification process for a provider, using the specified provider information, pact sources,
+  filters, consumers, verification options, publish options, provider state executor, and optional metrics data.
+  It returns true if all verifications succeed, or false if any verification fails.
+
+  ## Parameters
+  - `provider_info` - Information about the provider to verify (see `ProviderInfo`).
+  - `source` - List of pact sources to verify against (see `PactSource`).
+  - `filter` - Filter information to select which interactions to verify (see `FilterInfo`).
+  - `consumers` - List of consumer names to restrict verification to.
+  - `verification_options` - Options to control the verification process (see `VerificationOptions`).
+  - `publish_options` - Options for publishing verification results to a Pact Broker (see `PublishOptions`).
+  - `provider_state_executor` - Executor for provider state changes (see `HttpRequestProviderStateExecutor`).
+  - `metrics_data` - Optional metrics data to include with the verification (see `VerificationMetrics`).
+
+  ## Returns
+  - `true` if all verifications succeed, `false` otherwise.
+
+  This function is a NIF binding to the Rust implementation and will raise if the NIF is not loaded.
+  """
   @spec verify_provider(
           provider_info :: ProviderInfo.t(),
           source :: list(PactSource.t()),
