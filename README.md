@@ -46,7 +46,6 @@ For more information about plugins, refer to the [Pact plugin quick start guide]
 Currently, `pact_verifier_ex` supports:
 
 - Provider verification for HTTP and message-based pacts
-- Support for advanced verification options (filters, custom headers, SSL, etc.)
 - Integration with Pact plugins
 
 
