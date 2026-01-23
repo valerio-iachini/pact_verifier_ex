@@ -33,12 +33,18 @@ defmodule Pact.PactVerifier do
     """
     @enforce_keys [:name, :protocol, :host, :port, :path, :transports]
     defstruct [
-      :name, # Provider Name
-      :protocol, # Provider protocol, defaults to HTTP (deprecated, use transports instead)
-      :host, # Hostname of the provider
-      :port, # Port the provider is running on, defaults to 8080 (deprecated, use transports instead)
-      :path, # Base path for the provider, defaults to / (deprecated, use transports instead)
-      :transports # Transports configured for the provider
+      # Provider Name
+      :name,
+      # Provider protocol, defaults to HTTP (deprecated, use transports instead)
+      :protocol,
+      # Hostname of the provider
+      :host,
+      # Port the provider is running on, defaults to 8080 (deprecated, use transports instead)
+      :port,
+      # Base path for the provider, defaults to / (deprecated, use transports instead)
+      :path,
+      # Transports configured for the provider
+      :transports
     ]
 
     @type t :: %__MODULE__{
@@ -78,10 +84,14 @@ defmodule Pact.PactVerifier do
     """
     @enforce_keys [:transport]
     defstruct [
-      :transport, # Protocol Transport
-      :port, # Port to use for the transport
-      :path, # Base path to use for the transport (for protocols that support paths)
-      :scheme # Transport scheme to use. Will default to HTTP
+      # Protocol Transport
+      :transport,
+      # Port to use for the transport
+      :port,
+      # Base path to use for the transport (for protocols that support paths)
+      :path,
+      # Transport scheme to use. Will default to HTTP
+      :scheme
     ]
 
     @type t :: %__MODULE__{
@@ -193,7 +203,20 @@ defmodule Pact.PactVerifier do
     * `matching_branch` - Applications that match the provider version branch sent during verification. When true, returns the latest pact for any branch with the same name as the specified `provider_version_branch`.
     * `fallback_branch` - Fallback branch if branch doesn’t exist. Name of the branch to fallback to if the specified branch does not exist.
     """
-    @enforce_keys [:consumer, :tag, :fallback_tag, :latest, :deployed_or_released, :deployed, :released, :environment, :main_branch, :branch, :matching_branch, :fallback_branch]
+    @enforce_keys [
+      :consumer,
+      :tag,
+      :fallback_tag,
+      :latest,
+      :deployed_or_released,
+      :deployed,
+      :released,
+      :environment,
+      :main_branch,
+      :branch,
+      :matching_branch,
+      :fallback_branch
+    ]
     defstruct [
       :consumer,
       :tag,
@@ -271,11 +294,16 @@ defmodule Pact.PactVerifier do
             | {:file, String.t()}
             | {:dir, String.t()}
             | {:url, String.t(), nil | Pact.PactVerifier.HttpAuth.t()}
-            | {:broker_url, String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t(), [Pact.PactVerifier.Link.t()]}
+            | {:broker_url, String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t(),
+               [Pact.PactVerifier.Link.t()]}
             | {:broker_with_dynamic_configuration, BrokerDynamicConfig.t()}
             | {:string, String.t()}
             | {:webhook_callback_url,
-               %{pact_url: String.t(), broker_url: String.t(), auth: nil | Pact.PactVerifier.HttpAuth.t()}}
+               %{
+                 pact_url: String.t(),
+                 broker_url: String.t(),
+                 auth: nil | Pact.PactVerifier.HttpAuth.t()
+               }}
 
     @spec file(String.t()) :: t()
     def file(path), do: {:file, path}
@@ -286,7 +314,9 @@ defmodule Pact.PactVerifier do
     @spec url(String.t(), nil | Pact.PactVerifier.HttpAuth.t()) :: t()
     def url(url, auth \\ nil), do: {:url, url, auth}
 
-    @spec broker_url(String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t(), [Pact.PactVerifier.Link.t()]) :: t()
+    @spec broker_url(String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t(), [
+            Pact.PactVerifier.Link.t()
+          ]) :: t()
     def broker_url(provider_name, broker_url, auth \\ nil, links \\ []),
       do: {:broker_url, provider_name, broker_url, auth, links}
 
@@ -298,7 +328,8 @@ defmodule Pact.PactVerifier do
     @spec string(String.t()) :: t()
     def string(contract), do: {:string, contract}
 
-    @spec webhook_callback_url(String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t()) :: t()
+    @spec webhook_callback_url(String.t(), String.t(), nil | Pact.PactVerifier.HttpAuth.t()) ::
+            t()
     def webhook_callback_url(pact_url, broker_url, auth \\ nil),
       do: {:webhook_callback_url, %{pact_url: pact_url, broker_url: broker_url, auth: auth}}
   end
@@ -447,6 +478,7 @@ defmodule Pact.PactVerifier do
             headers: nil | map()
           }
   end
+
   defmodule VerificationOptions do
     @moduledoc """
     Options to use when running the verification.
@@ -473,7 +505,7 @@ defmodule Pact.PactVerifier do
     ]
 
     @type t :: %__MODULE__{
-            #request_filter: nil,
+            # request_filter: nil,
             disable_ssl_verification: boolean(),
             request_timeout: integer(),
             custom_headers: map(),
@@ -486,7 +518,7 @@ defmodule Pact.PactVerifier do
     @spec default() :: __MODULE__.t()
     def default() do
       %__MODULE__{
-        #request_filter: nil,
+        # request_filter: nil,
         disable_ssl_verification: false,
         request_timeout: 5000,
         custom_headers: %{},
