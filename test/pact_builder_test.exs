@@ -1,9 +1,9 @@
 defmodule Pact.Builders.PactBuilderTest do
-  alias Pact.PactVerifier.ProviderInfo
   alias Pact.PactVerifier.FilterInfo
-  alias Pact.PactVerifier.VerificationOptions
-  alias Pact.PactVerifier.PactSource
   alias Pact.PactVerifier.HttpRequestProviderStateExecutor
+  alias Pact.PactVerifier.PactSource
+  alias Pact.PactVerifier.ProviderInfo
+  alias Pact.PactVerifier.VerificationOptions
 
   use ExUnit.Case
 
