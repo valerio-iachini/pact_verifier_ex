@@ -4,7 +4,7 @@ defmodule PactElixir.MixProject do
   def project do
     [
       app: :pact_verifier_ex,
-      version: "0.3.0",
+      version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -40,7 +40,8 @@ defmodule PactElixir.MixProject do
       {:httpoison, "~> 2.3.0", only: [:test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:plug_cowboy, "~> 2.7", only: :test}
     ]
   end
 end

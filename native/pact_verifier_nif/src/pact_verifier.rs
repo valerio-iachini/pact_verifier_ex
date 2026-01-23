@@ -1,27 +1,20 @@
-use std::{
-    collections::HashMap,
-    fmt::Debug,
-    sync::{Arc, mpsc},
-};
+use std::{collections::HashMap, sync::Arc};
 
-use bytes::Bytes;
-use either::Either;
 use pact_models::{
     bodies::OptionalBody,
     prelude::{Generators, HttpAuth, MatchingRules},
     v4::http_parts::HttpRequest,
 };
 use pact_verifier::{
-    ConsumerVersionSelector, FilterById, FilterInfo, PactSource, ProviderInfo, ProviderTransport,
-    PublishOptions, VerificationOptions,
-    callback_executors::{HttpRequestProviderStateExecutor, RequestFilterExecutor},
-    metrics::VerificationMetrics,
+    ConsumerVersionSelector, FilterById, FilterInfo, NullRequestFilterExecutor, PactSource,
+    ProviderInfo, ProviderTransport, PublishOptions, VerificationOptions,
+    callback_executors::HttpRequestProviderStateExecutor, metrics::VerificationMetrics,
     pact_broker::Link,
 };
-use rustler::{LocalPid, NifResult, NifStruct, NifTaggedEnum, OwnedEnv};
+use rustler::{NifResult, NifStruct, NifTaggedEnum};
 
 #[derive(NifStruct)]
-#[module = "ProviderInfo"]
+#[module = "Pact.PactVerifier.ProviderInfo"]
 pub struct ExProviderInfo {
     pub name: String,
     #[deprecated(note = "Use transports instead")]
@@ -35,6 +28,7 @@ pub struct ExProviderInfo {
 }
 
 impl From<ExProviderInfo> for ProviderInfo {
+    #![allow(deprecated)]
     fn from(value: ExProviderInfo) -> Self {
         Self {
             name: value.name,
@@ -48,7 +42,7 @@ impl From<ExProviderInfo> for ProviderInfo {
 }
 
 #[derive(NifStruct)]
-#[module = "ProviderTransport"]
+#[module = "Pact.PactVerifier.ProviderTransport"]
 pub struct ExProviderTransport {
     pub transport: String,
     pub port: Option<u16>,
@@ -85,7 +79,7 @@ impl From<ExHttpAuth> for HttpAuth {
 }
 
 #[derive(NifStruct)]
-#[module = "Link"]
+#[module = "Pact.PactVerifier.Link"]
 pub struct ExLink {
     pub name: String,
     pub href: Option<String>,
@@ -105,7 +99,7 @@ impl From<ExLink> for Link {
 }
 
 #[derive(NifStruct)]
-#[module = "ConsumerVersionSelector"]
+#[module = "Pact.PactVerifier.ConsumerVersionSelector"]
 pub struct ExConsumerVersionSelector {
     pub consumer: Option<String>,
     pub tag: Option<String>,
@@ -145,7 +139,7 @@ pub enum ExPactSource {
     Unknown,
     File(String),
     Dir(String),
-    URL(String, Option<ExHttpAuth>),
+    Url(String, Option<ExHttpAuth>),
     BrokerUrl(String, String, Option<ExHttpAuth>, Vec<ExLink>),
     BrokerWithDynamicConfiguration {
         provider_name: String,
@@ -172,7 +166,7 @@ impl From<ExPactSource> for PactSource {
             ExPactSource::Unknown => PactSource::Unknown,
             ExPactSource::File(s) => PactSource::File(s),
             ExPactSource::Dir(s) => PactSource::Dir(s),
-            ExPactSource::URL(url, auth) => PactSource::URL(url, auth.map(Into::into)),
+            ExPactSource::Url(url, auth) => PactSource::URL(url, auth.map(Into::into)),
             ExPactSource::BrokerUrl(url, provider, auth, links) => PactSource::BrokerUrl(
                 url,
                 provider,
@@ -214,6 +208,7 @@ impl From<ExPactSource> for PactSource {
     }
 }
 
+#[allow(clippy::enum_variant_names)]
 #[derive(NifTaggedEnum)]
 pub enum ExFilterById {
     InteractionId(String),
@@ -257,7 +252,7 @@ impl From<ExFilterInfo> for FilterInfo {
 }
 
 #[derive(NifStruct)]
-#[module = "PublishOptions"]
+#[module = "Pact.PactVerifier.PublishOptions"]
 pub struct ExPublishOptions {
     pub provider_version: Option<String>,
     pub build_url: Option<String>,
@@ -277,7 +272,7 @@ impl From<ExPublishOptions> for PublishOptions {
 }
 
 #[derive(NifStruct)]
-#[module = "VerificationMetrics"]
+#[module = "Pact.PactVerifier.VerificationMetrics"]
 pub struct ExVerificationMetrics {
     pub test_framework: String,
     pub app_name: String,
@@ -295,7 +290,7 @@ impl From<ExVerificationMetrics> for VerificationMetrics {
 }
 
 #[derive(NifStruct)]
-#[module = "HttpRequest"]
+#[module = "Pact.PactVerifier.HttpRequest"]
 pub struct ExHttpRequest {
     pub method: String,
     pub path: String,
@@ -335,55 +330,56 @@ impl From<ExHttpRequest> for HttpRequest {
     }
 }
 
+// TODO
+//#[derive(NifStruct)]
+//#[module = "Pact.PactVerifier.RequestFilter"]
+//pub struct ExRequestFilter {
+//    pid: LocalPid,
+//}
+//
+//impl Debug for ExRequestFilter {
+//    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//        f.debug_struct("ExRequestFilter").finish()
+//    }
+//}
+//
+//impl RequestFilterExecutor for ExRequestFilter {
+//    fn call(
+//        self: std::sync::Arc<Self>,
+//        request: &pact_models::v4::http_parts::HttpRequest,
+//    ) -> pact_models::v4::http_parts::HttpRequest {
+//        let (_tx, rx) = mpsc::channel::<ExHttpRequest>();
+//        let mut msg_env = OwnedEnv::new();
+//        let _ = msg_env.send_and_clear(&self.pid, |env| {
+//            (
+//                rustler::Atom::from_str(env, "request").unwrap(),
+//                env.make_ref(),
+//                Into::<ExHttpRequest>::into(request.clone()),
+//            )
+//        });
+//
+//        match rx.recv() {
+//            Ok(filtered_request) => Into::<HttpRequest>::into(filtered_request),
+//            Err(_) => request.clone(), // fallback
+//        }
+//    }
+//
+//    fn call_non_http(
+//        &self,
+//        request_body: &pact_models::prelude::OptionalBody,
+//        metadata: &HashMap<String, Either<serde_json::Value, Bytes>>,
+//    ) -> (
+//        pact_models::prelude::OptionalBody,
+//        HashMap<String, Either<serde_json::Value, Bytes>>,
+//    ) {
+//        todo!()
+//    }
+//}
+
 #[derive(NifStruct)]
-#[module = "RequestFilter"]
-pub struct ExRequestFilter {
-    pid: LocalPid,
-}
-
-impl Debug for ExRequestFilter {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("ExRequestFilter").finish()
-    }
-}
-
-impl RequestFilterExecutor for ExRequestFilter {
-    fn call(
-        self: std::sync::Arc<Self>,
-        request: &pact_models::v4::http_parts::HttpRequest,
-    ) -> pact_models::v4::http_parts::HttpRequest {
-        let (_tx, rx) = mpsc::channel::<ExHttpRequest>();
-        let mut msg_env = OwnedEnv::new();
-        let _ = msg_env.send_and_clear(&self.pid, |env| {
-            (
-                rustler::Atom::from_str(env, "request").unwrap(),
-                env.make_ref(),
-                Into::<ExHttpRequest>::into(request.clone()),
-            )
-        });
-
-        match rx.recv() {
-            Ok(filtered_request) => Into::<HttpRequest>::into(filtered_request),
-            Err(_) => request.clone(), // fallback
-        }
-    }
-
-    fn call_non_http(
-        &self,
-        request_body: &pact_models::prelude::OptionalBody,
-        metadata: &HashMap<String, Either<serde_json::Value, Bytes>>,
-    ) -> (
-        pact_models::prelude::OptionalBody,
-        HashMap<String, Either<serde_json::Value, Bytes>>,
-    ) {
-        todo!()
-    }
-}
-
-#[derive(NifStruct)]
-#[module = "VerificationOptions"]
+#[module = "Pact.PactVerifier.VerificationOptions"]
 pub struct ExVerificationOptions {
-    pub request_filter: Option<ExRequestFilter>,
+    //pub request_filter: Option<ExRequestFilter>,
     pub disable_ssl_verification: bool,
     pub request_timeout: u64,
     pub custom_headers: HashMap<String, String>,
@@ -393,10 +389,10 @@ pub struct ExVerificationOptions {
     pub run_last_failed_only: bool,
 }
 
-impl From<ExVerificationOptions> for VerificationOptions<ExRequestFilter> {
+impl From<ExVerificationOptions> for VerificationOptions<NullRequestFilterExecutor> {
     fn from(value: ExVerificationOptions) -> Self {
         Self {
-            request_filter: value.request_filter.map(Arc::new),
+            request_filter: None,
             disable_ssl_verification: value.disable_ssl_verification,
             request_timeout: value.request_timeout,
             custom_headers: value.custom_headers,
@@ -409,7 +405,7 @@ impl From<ExVerificationOptions> for VerificationOptions<ExRequestFilter> {
 }
 
 #[derive(NifStruct)]
-#[module = "HttpRequestProviderStateExecutor"]
+#[module = "Pact.PactVerifier.HttpRequestProviderStateExecutor"]
 pub struct ExHttpRequestProviderStateExecutor {
     pub state_change_url: Option<String>,
     pub state_change_teardown: bool,
@@ -428,6 +424,7 @@ impl From<ExHttpRequestProviderStateExecutor> for HttpRequestProviderStateExecut
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 #[rustler::nif(name = "verify_provider", schedule = "DirtyIo")]
 pub fn verify_provider(
     provider_info: ExProviderInfo,

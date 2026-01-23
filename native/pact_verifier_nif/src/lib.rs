@@ -3,7 +3,7 @@ mod pact_verifier;
 use rustler::{Env, Term};
 use std::env;
 
-fn on_load(env: Env, _: Term) -> bool {
+fn on_load(_env: Env, _: Term) -> bool {
     unsafe {
         env::set_var("RUST_BACKTRACE", "1");
     }
@@ -33,9 +33,7 @@ fn on_load(env: Env, _: Term) -> bool {
         log::error!("backtrace:\n{:?}", backtrace);
     }));
 
-    //env.register::<PactBuilderResource>().is_ok()
-
     true
 }
 
-rustler::init! {"Elixir.Pact.Native.PactVerifier", load = on_load}
+rustler::init! {"Elixir.Pact.PactVerifier", load = on_load}
