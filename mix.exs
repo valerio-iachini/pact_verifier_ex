@@ -4,7 +4,7 @@ defmodule PactElixir.MixProject do
   def project do
     [
       app: :pact_verifier_ex,
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -22,6 +22,7 @@ defmodule PactElixir.MixProject do
       files: [
         "lib",
         "native",
+        ".cargo",
         "Cargo.toml",
         "Cargo.lock",
         "mix.exs",
