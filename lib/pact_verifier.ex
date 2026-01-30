@@ -205,20 +205,6 @@ defmodule Pact.PactVerifier do
     * `matching_branch` - Applications that match the provider version branch sent during verification. When true, returns the latest pact for any branch with the same name as the specified `provider_version_branch`.
     * `fallback_branch` - Fallback branch if branch doesn’t exist. Name of the branch to fallback to if the specified branch does not exist.
     """
-    @enforce_keys [
-      :consumer,
-      :tag,
-      :fallback_tag,
-      :latest,
-      :deployed_or_released,
-      :deployed,
-      :released,
-      :environment,
-      :main_branch,
-      :branch,
-      :matching_branch,
-      :fallback_branch
-    ]
     defstruct [
       :consumer,
       :tag,
