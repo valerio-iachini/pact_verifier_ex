@@ -6,10 +6,9 @@ use pact_models::{
     v4::http_parts::HttpRequest,
 };
 use pact_verifier::{
-    ConsumerVersionSelector, FilterById, FilterInfo, NullRequestFilterExecutor, PactSource,
-    ProviderInfo, ProviderTransport, PublishOptions, VerificationOptions,
     callback_executors::HttpRequestProviderStateExecutor, metrics::VerificationMetrics,
-    pact_broker::Link,
+    pact_broker::Link, ConsumerVersionSelector, FilterById, FilterInfo, NullRequestFilterExecutor,
+    PactSource, ProviderInfo, ProviderTransport, PublishOptions, VerificationOptions,
 };
 use rustler::{NifResult, NifStruct, NifTaggedEnum};
 
@@ -63,16 +62,31 @@ impl From<ExProviderTransport> for ProviderTransport {
 
 #[derive(NifTaggedEnum)]
 pub enum ExHttpAuth {
-    User(String, Option<String>),
-    Token(String),
+    User(ExUserAuth),
+    Token(ExTokenAuth),
     None,
+}
+
+#[derive(NifStruct)]
+#[module = "Pact.PactVerifier.HttpAuth.UserAuth"]
+pub struct ExUserAuth {
+    username: String,
+    password: Option<String>,
+}
+
+#[derive(NifStruct)]
+#[module = "Pact.PactVerifier.HttpAuth.TokenAuth"]
+pub struct ExTokenAuth {
+    value: String,
 }
 
 impl From<ExHttpAuth> for HttpAuth {
     fn from(value: ExHttpAuth) -> Self {
         match value {
-            ExHttpAuth::User(username, password) => HttpAuth::User(username, password),
-            ExHttpAuth::Token(token) => HttpAuth::Token(token),
+            ExHttpAuth::User(ExUserAuth { username, password }) => {
+                HttpAuth::User(username, password)
+            }
+            ExHttpAuth::Token(ExTokenAuth { value }) => HttpAuth::Token(value),
             ExHttpAuth::None => HttpAuth::None,
         }
     }

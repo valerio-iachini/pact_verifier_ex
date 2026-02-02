@@ -143,18 +143,38 @@ defmodule Pact.PactVerifier do
     HttpAuth
     """
     @type t ::
-            {:user, String.t(), nil | String.t()}
-            | {:token, String.t()}
+            {:user, __MODULE__.UserAuth.t()}
+            | {:token, __MODULE__.TokenAuth.t()}
             | :none
+
+    defmodule UserAuth do
+      @moduledoc """
+      UserAuth
+      """
+
+      @derive {Inspect, except: [:username, :password]}
+      @enforce_keys [:username]
+      defstruct [:username, :password]
+    end
+
+    defmodule TokenAuth do
+      @moduledoc """
+      TokenAuth
+      """
+      @derive {Inspect, except: [:value]}
+      @enforce_keys [:value]
+      defstruct [:value]
+    end
 
     @spec default() :: __MODULE__.t()
     def default, do: {:user, "", nil}
 
     @spec user(username :: String.t(), password :: nil | String.t()) :: __MODULE__.t()
-    def user(username, password \\ nil), do: {:user, username, password}
+    def user(username, password \\ nil),
+      do: {:user, %__MODULE__.UserAuth{username: username, password: password}}
 
     @spec token(token :: String.t()) :: __MODULE__.t()
-    def token(token), do: {:token, token}
+    def token(token), do: {:token, %__MODULE__.TokenAuth{value: token}}
   end
 
   defmodule Link do
