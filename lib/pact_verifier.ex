@@ -155,15 +155,25 @@ defmodule Pact.PactVerifier do
       @derive {Inspect, except: [:username, :password]}
       @enforce_keys [:username]
       defstruct [:username, :password]
+
+      @type t :: %__MODULE__{
+              username: String.t(),
+              password: nil | String.t()
+            }
     end
 
     defmodule TokenAuth do
       @moduledoc """
       TokenAuth
       """
+
       @derive {Inspect, except: [:value]}
       @enforce_keys [:value]
       defstruct [:value]
+
+      @type t :: %__MODULE__{
+              value: String.t()
+            }
     end
 
     @spec default() :: __MODULE__.t()
