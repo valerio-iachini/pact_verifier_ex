@@ -167,7 +167,7 @@ defmodule Pact.PactVerifier do
     end
 
     @spec default() :: __MODULE__.t()
-    def default, do: {:user, "", nil}
+    def default, do: user("")
 
     @spec user(username :: String.t(), password :: nil | String.t()) :: __MODULE__.t()
     def user(username, password \\ nil),
