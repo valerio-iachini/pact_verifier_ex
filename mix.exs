@@ -1,10 +1,10 @@
-defmodule PactElixir.MixProject do
+defmodule PactVerifierEx.MixProject do
   use Mix.Project
 
   def project do
     [
       app: :pact_verifier_ex,
-      version: "0.1.3",
+      version: "0.1.4",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
