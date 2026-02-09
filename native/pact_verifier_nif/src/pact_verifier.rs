@@ -6,9 +6,10 @@ use pact_models::{
     v4::http_parts::HttpRequest,
 };
 use pact_verifier::{
+    ConsumerVersionSelector, FilterById, FilterInfo, NullRequestFilterExecutor, PactSource,
+    ProviderInfo, ProviderTransport, PublishOptions, VerificationOptions,
     callback_executors::HttpRequestProviderStateExecutor, metrics::VerificationMetrics,
-    pact_broker::Link, ConsumerVersionSelector, FilterById, FilterInfo, NullRequestFilterExecutor,
-    PactSource, ProviderInfo, ProviderTransport, PublishOptions, VerificationOptions,
+    pact_broker::Link,
 };
 use rustler::{NifResult, NifStruct, NifTaggedEnum};
 
