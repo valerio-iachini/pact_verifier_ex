@@ -10,7 +10,7 @@ debug = 2
 
 [workspace.dependencies]
 rustler = "0.37.2"
-pact_verifier = { version = "1.3.3", default-features = false,  features = ["datetime", "plugins"]}
+pact_verifier = { version = "1.3.4", default-features = false,  features = ["datetime", "plugins"]}
 pact_models = "1.3.8"
 bytes = "1.10.0"
 either = "1.15.0"
