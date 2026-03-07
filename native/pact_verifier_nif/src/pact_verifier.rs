@@ -402,6 +402,7 @@ pub struct ExVerificationOptions {
     pub no_pacts_is_error: bool,
     pub exit_on_first_failure: bool,
     pub run_last_failed_only: bool,
+    pub follow_redirects: bool,
 }
 
 impl From<ExVerificationOptions> for VerificationOptions<NullRequestFilterExecutor> {
@@ -415,6 +416,7 @@ impl From<ExVerificationOptions> for VerificationOptions<NullRequestFilterExecut
             no_pacts_is_error: value.no_pacts_is_error,
             exit_on_first_failure: value.exit_on_first_failure,
             run_last_failed_only: value.run_last_failed_only,
+            follow_redirects: value.follow_redirects,
         }
     }
 }

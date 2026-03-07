@@ -510,6 +510,7 @@ defmodule Pact.PactVerifier do
     * `no_pacts_is_error` - If no pacts are found to verify, then this should be an error.
     * `exit_on_first_failure` - Exit verification run on first failure.
     * `run_last_failed_only` - Only execute the interactions that failed on the previous verifier run.
+    * `follow_redirects` - If redirects should be automatically followed.
     """
     defstruct [
       :request_filter,
@@ -519,7 +520,8 @@ defmodule Pact.PactVerifier do
       :coloured_output,
       :no_pacts_is_error,
       :exit_on_first_failure,
-      :run_last_failed_only
+      :run_last_failed_only,
+      :follow_redirects
     ]
 
     @type t :: %__MODULE__{
@@ -530,7 +532,8 @@ defmodule Pact.PactVerifier do
             coloured_output: boolean(),
             no_pacts_is_error: boolean(),
             exit_on_first_failure: boolean(),
-            run_last_failed_only: boolean()
+            run_last_failed_only: boolean(),
+            follow_redirects: boolean()
           }
 
     @spec default() :: __MODULE__.t()
@@ -543,7 +546,8 @@ defmodule Pact.PactVerifier do
         coloured_output: true,
         no_pacts_is_error: true,
         exit_on_first_failure: false,
-        run_last_failed_only: false
+        run_last_failed_only: false,
+        follow_redirects: true
       }
     end
   end
