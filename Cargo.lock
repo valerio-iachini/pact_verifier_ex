@@ -1078,7 +1078,7 @@ dependencies = [
  "libc",
  "percent-encoding",
  "pin-project-lite",
- "socket2 0.5.10",
+ "socket2 0.6.3",
  "tokio",
  "tower-service",
  "tracing",
@@ -1992,9 +1992,9 @@ dependencies = [
 
 [[package]]
 name = "pact_models"
-version = "1.3.8"
+version = "1.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5dcd8f96036dfe7003ca531902890862ac83cecfb0569f824a333ec9f8dd803"
+checksum = "f9d29c0f9419f30d7e7f190e83c58e363ec9cd45f22edd8f1101c5213b4528fb"
 dependencies = [
  "anyhow",
  "ariadne",
@@ -2033,9 +2033,9 @@ dependencies = [
 
 [[package]]
 name = "pact_verifier"
-version = "1.3.4"
+version = "1.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89ea67d231c39f71e3b49c1a2ea8044a3869848704f0cd9111ddf05240702598"
+checksum = "0fe0d4b3ce6c7d7377b61dc814c5cdd626c62494244e7697539088e0c4586190"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -2337,7 +2337,7 @@ dependencies = [
  "quinn-udp",
  "rustc-hash",
  "rustls",
- "socket2 0.5.10",
+ "socket2 0.6.3",
  "thiserror",
  "tokio",
  "tracing",
@@ -2374,7 +2374,7 @@ dependencies = [
  "cfg_aliases",
  "libc",
  "once_cell",
- "socket2 0.5.10",
+ "socket2 0.6.3",
  "tracing",
  "windows-sys 0.60.2",
 ]
@@ -3132,9 +3132,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.51.0"
+version = "1.52.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bd1c4c0fc4a7ab90fc15ef6daaa3ec3b893f004f915f2392557ed23237820cd"
+checksum = "b67dee974fe86fd92cc45b7a95fdd2f99a36a6d7b0d431a231178d3d670bbcc6"
 dependencies = [
  "bytes",
  "libc",
