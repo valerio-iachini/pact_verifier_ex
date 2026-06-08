@@ -511,9 +511,10 @@ defmodule Pact.PactVerifier do
     * `exit_on_first_failure` - Exit verification run on first failure.
     * `run_last_failed_only` - Only execute the interactions that failed on the previous verifier run.
     * `follow_redirects` - If redirects should be automatically followed.
+    * `broker_request_retries` - Number of times to retry failed HTTP requests to the Pact Broker (retries on 5xx, 408, and 429). Default is 8.
     """
     defstruct [
-      :request_filter,
+      # :request_filter,
       :disable_ssl_verification,
       :request_timeout,
       :custom_headers,
@@ -521,7 +522,8 @@ defmodule Pact.PactVerifier do
       :no_pacts_is_error,
       :exit_on_first_failure,
       :run_last_failed_only,
-      :follow_redirects
+      :follow_redirects,
+      :broker_request_retries
     ]
 
     @type t :: %__MODULE__{
@@ -533,7 +535,8 @@ defmodule Pact.PactVerifier do
             no_pacts_is_error: boolean(),
             exit_on_first_failure: boolean(),
             run_last_failed_only: boolean(),
-            follow_redirects: boolean()
+            follow_redirects: boolean(),
+            broker_request_retries: integer()
           }
 
     @spec default() :: __MODULE__.t()
@@ -547,7 +550,8 @@ defmodule Pact.PactVerifier do
         no_pacts_is_error: true,
         exit_on_first_failure: false,
         run_last_failed_only: false,
-        follow_redirects: true
+        follow_redirects: true,
+        broker_request_retries: 8
       }
     end
   end
@@ -564,20 +568,20 @@ defmodule Pact.PactVerifier do
     * `state_change_url` - The URL to call for provider state changes. If not set, no state change requests will be made.
     * `state_change_teardown` - If true, a teardown request will be made after verification to clean up provider state.
     * `state_change_body` - If true, the state change will be sent in the request body as JSON. If false, it will be sent as query parameters.
-    * `reties` - The number of times to retry the state change request if it fails.
+    * `retries` - The number of times to retry the state change request if it fails.
     """
     defstruct [
       :state_change_url,
       :state_change_teardown,
       :state_change_body,
-      :reties
+      :retries
     ]
 
     @type t :: %__MODULE__{
             state_change_url: nil | String.t(),
             state_change_teardown: boolean(),
             state_change_body: boolean(),
-            reties: integer()
+            retries: integer()
           }
 
     @spec default() :: __MODULE__.t()
@@ -586,7 +590,7 @@ defmodule Pact.PactVerifier do
         state_change_url: nil,
         state_change_teardown: false,
         state_change_body: true,
-        reties: 3
+        retries: 3
       }
     end
   end

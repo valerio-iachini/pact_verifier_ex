@@ -403,6 +403,7 @@ pub struct ExVerificationOptions {
     pub exit_on_first_failure: bool,
     pub run_last_failed_only: bool,
     pub follow_redirects: bool,
+    pub broker_request_retries: u8,
 }
 
 impl From<ExVerificationOptions> for VerificationOptions<NullRequestFilterExecutor> {
@@ -417,6 +418,7 @@ impl From<ExVerificationOptions> for VerificationOptions<NullRequestFilterExecut
             exit_on_first_failure: value.exit_on_first_failure,
             run_last_failed_only: value.run_last_failed_only,
             follow_redirects: value.follow_redirects,
+            broker_request_retries: value.broker_request_retries,
         }
     }
 }
@@ -427,7 +429,7 @@ pub struct ExHttpRequestProviderStateExecutor {
     pub state_change_url: Option<String>,
     pub state_change_teardown: bool,
     pub state_change_body: bool,
-    pub reties: u8,
+    pub retries: u8,
 }
 
 impl From<ExHttpRequestProviderStateExecutor> for HttpRequestProviderStateExecutor {
@@ -436,7 +438,7 @@ impl From<ExHttpRequestProviderStateExecutor> for HttpRequestProviderStateExecut
             state_change_url: value.state_change_url,
             state_change_teardown: value.state_change_teardown,
             state_change_body: value.state_change_body,
-            reties: value.reties,
+            retries: value.retries,
         }
     }
 }
