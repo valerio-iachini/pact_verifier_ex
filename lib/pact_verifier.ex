@@ -514,7 +514,7 @@ defmodule Pact.PactVerifier do
     * `broker_request_retries` - Number of times to retry failed HTTP requests to the Pact Broker (retries on 5xx, 408, and 429). Default is 8.
     """
     defstruct [
-      #:request_filter,
+      # :request_filter,
       :disable_ssl_verification,
       :request_timeout,
       :custom_headers,
