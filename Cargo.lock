@@ -291,9 +291,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "bytes"
-version = "1.11.1"
+version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e748733b7cbc798e1434b6ac524f0c1ff2ab456fe201501e6497c8417a4fc33"
+checksum = "8ae3f5d315924270530207e2a68396c3cc547f6dca3fbdca317cfb1a51edb593"
 dependencies = [
  "serde",
 ]
@@ -2070,9 +2070,9 @@ dependencies = [
 
 [[package]]
 name = "pact_matching"
-version = "2.0.5"
+version = "2.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "80fa14cf0ff7ec47cfd1d228771472a8801e4b6d05366a6c706597c6abe60856"
+checksum = "43d1affd2cdc28c0becf2b1370595a6733458b19cbe3c7591de28275748efc58"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -2110,9 +2110,9 @@ dependencies = [
 
 [[package]]
 name = "pact_models"
-version = "1.3.10"
+version = "1.3.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9d29c0f9419f30d7e7f190e83c58e363ec9cd45f22edd8f1101c5213b4528fb"
+checksum = "956270cedc5547fc941d03b686c651f08d25b37617608cc5d8c67299655269d0"
 dependencies = [
  "anyhow",
  "ariadne",
@@ -2151,9 +2151,9 @@ dependencies = [
 
 [[package]]
 name = "pact_verifier"
-version = "1.4.1"
+version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "928683b1009db964045de8b607db77d5e7b48b8d0dbce2ebd7e92857da1e282b"
+checksum = "ce1dcfc29b6ccf52a6cbb44ee7b1cd07bb5faacfb03933373f41350d25216179"
 dependencies = [
  "ansi_term",
  "anyhow",
