@@ -2026,9 +2026,9 @@ dependencies = [
 
 [[package]]
 name = "pact-plugin-driver"
-version = "1.0.0-beta.2"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a57020200c95ae7e9000279365cd40d53b04a175fec2ac30747f433c67590367"
+checksum = "2e6057f90dca5cfd3d86430fa5c6b483c8722a70651712af423e33b334a5c6eb"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2070,9 +2070,9 @@ dependencies = [
 
 [[package]]
 name = "pact_matching"
-version = "2.0.5"
+version = "2.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "80fa14cf0ff7ec47cfd1d228771472a8801e4b6d05366a6c706597c6abe60856"
+checksum = "4ca18228eef920f1bf5670d032439401e3470e77a3c889d09f7f6ce1ec29351e"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -2151,9 +2151,9 @@ dependencies = [
 
 [[package]]
 name = "pact_verifier"
-version = "1.4.1"
+version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "928683b1009db964045de8b607db77d5e7b48b8d0dbce2ebd7e92857da1e282b"
+checksum = "36dbc20616afe43a847a397b2e5c08d650719b075d2adb26aa259bcdb8664e44"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -2183,6 +2183,7 @@ dependencies = [
  "tracing-core",
  "url",
  "urlencoding",
+ "uuid",
 ]
 
 [[package]]
@@ -2630,9 +2631,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.13.0"
+version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a0e75113e14dc5acb068cd0786884f214f1312650a3d36d269f5c4f3cdee8a2"
+checksum = "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -2642,9 +2643,9 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.13"
+version = "0.4.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5276caf25ac86c8d810222b3dbb938e512c55c6831a10f3e6ed1c93b84041f1c"
+checksum = "8fcfdb36bda0c880c5931cdc7a2bcdc8ba4556847b9d912bca70bc94708711ad"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -3374,9 +3375,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.52.3"
+version = "1.53.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8fc7f01b389ac15039e4dc9531aa973a135d7a4135281b12d7c1bc79fd57fffe"
+checksum = "d988bcd52dbe076d3d46903332f58c912b87a2c49b1428419a5845154762ffee"
 dependencies = [
  "bytes",
  "libc",
